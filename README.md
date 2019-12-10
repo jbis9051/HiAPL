@@ -25,6 +25,7 @@ Variables are statically typed. Add your type in the `type` attribute.
 ## Who?
 
 JBis - the creator
+
 You - the user
 
 ## What?
