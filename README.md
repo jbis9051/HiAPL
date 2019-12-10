@@ -1,6 +1,24 @@
 # HiAPL
-HTML is a programming language
+*HTML is a programming language*
 
+Inspired by Google listing HTML as a programming language, HTML is becoming a programming language.
+
+# Get Started
+
+Let's starting writing! HiAPL follows basic HTML syntax with tags, attributes, and more!
+
+## Logging:
+```html
+<log><string>Hello World</string></log> <!-- logs Hello World -->
+```
+
+## Define Variables
+Variables are statically typed. Add your type in the `type` attribute.
+
+```html
+<x type="string">Hello World</x>
+<log><x/></log> <!-- logs Hello World -->
+```
 
 # FAQ
 
