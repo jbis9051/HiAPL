@@ -59,3 +59,11 @@ Client side and server side. For node, simply look at the import syntax:
 ## When?
 
 Now, of course. Learn it now.
+
+## How are we making the world a better place?
+
+We are currently in the midst of a pandemic. No, not COVID-19. A global programming language shortage. [Espcially](https://www.typescriptlang.org/) [ones](https://coffeescript.org/) [that](https://www.purescript.org/) [compile](https://clojurescript.org/)  [to](https://www.scala-js.org/) [JavaScript](http://vanilla-js.com/). HiAPL aims to solve that problem by creating a single langage that can be used for all purposes. Client side web, server side, and native applicaitons. This is accomplished through a concept called "using JavaScript libraries".
+
+## You keep saying "HTML". Don't you mean XML?
+
+Oh so you're *that* guy.
