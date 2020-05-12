@@ -20,6 +20,10 @@ Variables are statically typed. Add your type in the `type` attribute.
 <log><x/></log> <!-- logs Hello World -->
 ```
 
+# Contributing
+
+If you have found a feature, please report it [here](https://github.com/jbis9051/HiAPL/issues).
+
 # FAQ
 
 ## Who?
