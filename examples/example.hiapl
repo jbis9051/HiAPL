@@ -1,0 +1,17 @@
+<!DOCTYPE hiapl>
+<console>
+    <log>
+        Hello World
+    </log>
+</console>
+<x>100</x>
+<y>50</y>
+<z><plus><x/><y/></plus></z>
+<console>
+    <log>
+        <z/>
+    </log>
+</console>
+<If>
+
+</If>

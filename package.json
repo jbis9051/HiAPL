@@ -1,0 +1,7 @@
+{
+  "name": "HiAPL",
+  "version": "1.0.0",
+  "dependencies": {
+    "mocha": "^7.1.2"
+  }
+}
