@@ -2,7 +2,7 @@ const Element = require('./Element');
 
 class Root extends Element {
     constructor() {
-        super( null);
+        super(null);
         this.name = "root";
     }
 }

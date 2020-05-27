@@ -7,11 +7,12 @@ const htmlParser = require('../src/parsers/HTMLParser/HTMLParser');
 
 describe('HTMLParser test', () => {
     it('should parser', (done) => {
-        const input = fs.readFileSync(path.join(__dirname, '../examples/example3.hiapl'));
+        const input = fs.readFileSync(path.join(__dirname, '../examples/example.hiapl'));
         const arr = [];
         const consumer = Array.prototype.push.bind(arr);
         lexer(input.toString(), consumer);
         const hiAplTree = htmlParser(arr);
+        console.log(hiAplTree);
         done();
     });
 

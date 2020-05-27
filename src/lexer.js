@@ -93,12 +93,12 @@ function lexer(input, consumer) {
                 state = states.endSelfClosingTag;
                 return;
             }
+            if(content.join("") === "!--"){
+                emit(tokens.commentStart);
+                state = states.commentContent;
+                return;
+            }
             if(char === " "){
-                if(content.join("") === "!--"){
-                    emit(tokens.commentStart);
-                    state = states.commentContent;
-                    return;
-                }
                 emit(tokens.tagName);
                 state = states.attributeName;
                 return;

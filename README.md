@@ -5,19 +5,14 @@ Inspired by Google listing HTML as a programming language, HTML is becoming a pr
 
 # Get Started
 
-Let's starting writing! HiAPL follows basic HTML syntax with tags, attributes, and more!
-
-## Logging:
-```html
-<log><string>Hello World</string></log> <!-- logs Hello World -->
-```
-
-## Define Variables
-Variables are statically typed. Add your type in the `type` attribute.
+Lets starting writing! HiAPL follows basic HTML syntax with tags, attributes, and more!
 
 ```html
-<x type="string">Hello World</x>
-<log><x/></log> <!-- logs Hello World -->
+<console>
+    <log>
+        <arg>Hello World</arg>
+    </log>
+</console>
 ```
 
 # Contributing
@@ -49,7 +44,7 @@ Client side and server side. For node, simply look at the import syntax:
     <meta type="import" module="fs">
 </head>
 <!-- Now You can use the module -->
-<text type="String">
+<text init="true">
   <fs>
     <readFileSync>./text.txt</readFileSync>
   </fs>
@@ -62,7 +57,7 @@ Now, of course. Learn it now.
 
 ## How are we making the world a better place?
 
-We are currently in the midst of a pandemic. No, not COVID-19. A global programming language shortage. [Espcially](https://www.typescriptlang.org/) [ones](https://coffeescript.org/) [that](https://www.purescript.org/) [compile](https://clojurescript.org/)  [to](https://www.scala-js.org/) [JavaScript](http://vanilla-js.com/). HiAPL aims to solve that problem by creating a single langage that can be used for all purposes. Client side web, server side, and native applicaitons. This is accomplished through a concept called "using JavaScript libraries". This concept is discuss more [here](https://www.npmjs.com/).
+We are currently in the midst of a pandemic. No, not COVID-19. A global programming language shortage. [Especially](https://www.typescriptlang.org/) [ones](https://coffeescript.org/) [that](https://www.purescript.org/) [compile](https://clojurescript.org/)  [to](https://www.scala-js.org/) [JavaScript](http://vanilla-js.com/). HiAPL aims to solve that problem by creating a single language that can be used for all purposes. Client side web, server side, and native applications. This is accomplished through a concept called "using JavaScript libraries". This concept is discuss more [here](https://www.npmjs.com/).
 
 ## You keep saying "HTML". Don't you mean XML?
 
