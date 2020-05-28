@@ -31,12 +31,10 @@ const states = {
 }
 
 
-/**
- *
- * @param {String} input
- * @param {function} consumer
- */
-function lexer(input, consumer) {
+
+function lexer(input) {
+    const lexed = [];
+
     input = input.trim();
     if (!input.startsWith("<!DOCTYPE hiapl>")) { // TODO should be done in parser
         throw new SyntaxError("HiAPL files require a HiAPL doctype deceleration");
@@ -54,7 +52,7 @@ function lexer(input, consumer) {
     let content = [];
 
     function emit(token) {
-        consumer({
+        lexed.push({
             token: token,
             content: content,
             position: Object.assign({}, position)
@@ -214,7 +212,7 @@ function lexer(input, consumer) {
         position.char++;
     });
 
-
+    return lexed;
 }
 
 module.exports = lexer;

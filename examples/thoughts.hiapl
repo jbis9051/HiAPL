@@ -1,0 +1,14 @@
+<!DOCTYPE hiapl>
+<console>
+    <log>
+        <arg>Hello World</arg>
+    </log>
+</console>
+<x init="true">100</x>
+<y init="true">50</y>
+<z init="true"><plus><x/><y/></plus></z>
+<console>
+    <log>
+        <z/>
+    </log>
+</console>

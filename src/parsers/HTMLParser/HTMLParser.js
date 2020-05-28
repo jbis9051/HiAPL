@@ -57,6 +57,7 @@ function htmlParser(tokens) {
                 return states.inElement;
             }
             if (item.token === tokenStore.endOpenWithCloseTagShorthand) {
+                currentNode.closure = "short";
                 return states.inCloser;
             }
             throw `Unexpected: ${item}`;

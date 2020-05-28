@@ -52,6 +52,10 @@ function and(arg1, arg2) {
 function xor(arg1, arg2) {
   return arg1 ^ arg2;
 }
+
+function equal(arg1, arg2) {
+  return arg1 === arg2;
+}
 ```
 
 ## If Statements
@@ -85,11 +89,11 @@ For loops? Boring! Here's some syntactical salt for that wound:
 
 ```html
 <!-- for -->
-<i>0</i> <!-- i = 0 -->
+<i init="true">0</i> <!-- i = 0 -->
 <While>
     <condition><isLessThan><i/><arg>100</arg></isLessThan></condition>
     <!-- some code -->
      <i declare="true"><plus><i/><arg>1</arg></plus></i> <!-- i++ -->
 </While>
-<Delete><i/></Delete> <!-- Bringing back garbage collection to JavaScript since 2020 -->
+<Delete><i/></Delete> <!-- Bringing manual back garbage collection to JavaScript since 2020 -->
 ```

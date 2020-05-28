@@ -2,6 +2,7 @@
   "name": "HiAPL",
   "version": "1.0.0",
   "dependencies": {
+    "escodegen": "^1.14.1",
     "mocha": "^7.1.2"
   }
 }
