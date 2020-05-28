@@ -8,7 +8,10 @@ const hiAPLc = require('../src');
 describe('hiaplc test', () => {
     it('should compile', (done) => {
         const input = fs.readFileSync(path.join(__dirname, '../examples/example.hiapl')).toString();
-        console.log(hiAPLc(input));
+        const js = hiAPLc(input);
+        console.log(js);
+        console.log("-----")
+        eval(js);
         done();
     });
 

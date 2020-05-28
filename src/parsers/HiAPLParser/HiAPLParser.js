@@ -95,7 +95,7 @@ function parseExpectingResult(element, options = {}) {
     if (element.name === "Else") {
         throw `<Else> tags are only permitted as children of <If> elements`;
     }
-    if (getAttributeContent(element, "declare") === "true") {
+    if (getAttributeContent(element, "assign") === "true") {
         ensureAChild(element);
         return new AST.AssignmentExpression(new AST.Identifier(element.name), parseExpectingResult(element.children[0]))
     }
@@ -122,7 +122,7 @@ function parseExpectingResult(element, options = {}) {
         }
         return memberize(element, undefined, undefined);
     }
-    // TODO: Check for function deceleration (<params> child), allow for explicit call="true" logic and stuff
+    // TODO: Check for function deceleration (<params> child)
 
     return new AST.CallExpression(new AST.Identifier(element.name), element.children.map(child => parseExpectingResult(child)));
 }
@@ -131,7 +131,7 @@ function isCallElement(element) {
     if (getAttributeContent(element, "call") === "true") {
         return true;
     }
-    if (getAttributeContent(element, "init") === "true" || getAttributeContent(element, "declare") === "true") {
+    if (getAttributeContent(element, "init") === "true" || getAttributeContent(element, "assign") === "true") {
         return false;
     }
     if (element.children.length > 1) {
@@ -139,6 +139,9 @@ function isCallElement(element) {
     }
     if (element.children.length === 0) {
         return element.closure === "long";
+    }
+    if(element.children.length === 1 && element.children[0].closure === "short"){
+        return true;
     }
     return false;
 }

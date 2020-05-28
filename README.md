@@ -39,6 +39,8 @@ Why not?
 
 Client side and server side. For node, simply look at the import syntax:
 
+**Note:** ES6 import syntax is a planned feature and not available yet. You can use require now.
+
 ```html
 <head>
     <meta type="import" module="fs">
@@ -46,7 +48,7 @@ Client side and server side. For node, simply look at the import syntax:
 <!-- Now You can use the module -->
 <text init="true">
   <fs>
-    <readFileSync>./text.txt</readFileSync>
+    <readFileSync><arg>./text.txt</arg></readFileSync>
   </fs>
 </text>
 ```

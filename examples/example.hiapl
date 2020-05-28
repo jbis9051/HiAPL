@@ -1,8 +1,12 @@
 <!DOCTYPE hiapl>
-<x>
-    <y call="true">
-        <z declare="true">
-            <d/>
-        </z>
-    </y>
-</x>
+<x init="true"><arg>Hello World</arg></x>
+<console>
+    <log call="true">
+        <x>
+            <substring>
+                <arg>0</arg>
+                <arg>5</arg>
+            </substring>
+        </x>
+    </log>
+</console>

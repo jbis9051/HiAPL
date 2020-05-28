@@ -1,22 +1,32 @@
 # Syntax Guide 
 
+Welcome! Let's get Started:
+
+## Intro
+
+HiAPL stands for HTML is a programming language. HiAPL was inspired by Google listing [HTML as a programming language](https://i.redd.it/wmoaf3m765d21.jpg).
+
+HiAPL compiles to vanilla JavaScript but is written using HTML tags and attributes.
+
 ## Reserved Tags
+
+Similar to JavaScript keywords, HiAPL has a set of reserved tags. Keywords always start with a capital letter.
 
 ### If Statements
 
 ```html
 <If>
     <condition><isGreaterThan><x/><y/></isGreaterThan></condition>
-    <x declare="true"><plus></x><arg>1</arg></plus></x>
+    <x assign="true"><plus></x><arg>1</arg></plus></x>
 </If>
 ```
 
 ```html
 <If>
     <condition><isGreaterThan><x/><y/></isGreaterThan></condition>
-    <x declare="true"><plus><x/><arg>1</arg></plus></x>
+    <x assign="true"><plus><x/><arg>1</arg></plus></x>
     <Else> <!-- HiAPL does not have else if statements. To replicate this redundant behavior simply nest an <If> block in an <Else> block -->
-        <x declare="true"><minus><x/><arg>1</arg></minus></x>
+        <x assign="true"><minus><x/><arg>1</arg></minus></x>
     </Else>
 </If>
 ```
@@ -26,7 +36,7 @@
 ```html
 <While>
     <condition><isGreaterThan><x/><y/></isGreaterThan></condition>
-    <x declare="true"><plus><x/><arg>1</arg></plus></x>
+    <x assign="true"><plus><x/><arg>1</arg></plus></x>
 </While>
 ```
 For loops? Boring! Here's some syntactical salt for that wound:
@@ -37,15 +47,56 @@ For loops? Boring! Here's some syntactical salt for that wound:
 <While>
     <condition><isLessThan><i/><arg>100</arg></isLessThan></condition> <!-- i < 100 -->
     <!-- some code -->
-     <i declare="true"><plus><i/><arg>1</arg></plus></i> <!-- i++ -->
+     <i assign="true"><plus><i/><arg>1</arg></plus></i> <!-- i++ -->
 </While>
 <Delete><i/></Delete> <!-- Bringing manual back garbage collection to JavaScript since 2020 -->
 ```
 
 ### Special Tags
 
-Have you ever been writing a while loop and happen to forget to put your condition in forcing you to waste countless CPU cycles scrolling back up in order to put in? We've eliminated this problem. All special tags (e.g. `params`, `condition`, etc.) can be placed anywhere in the block. Feel free to place your `<If>` `<condition>`'s at the beginning, end, or even the middle of your code. 
+In addition to keywords, HiAPL has special tags. These tags can only be used where approirate and cannot be overidden.
 
+- `<condition>` allowed once in a `<While>` or `<If>` tag
+- `<arg>` see `<arg>` section
+- `<params>` allowed once in a function decleration. See Function decelerations for more info.
+
+Have you ever been writing a while loop and happen to forget to put your condition in forcing you to waste countless CPU cycles scrolling back up in order to put in? We've eliminated this problem. All special tags can be placed anywhere in the block. Feel free to place your `<If>` `<condition>`'s at the beginning, end, or even the middle of your code. 
+
+## Variables
+
+Variables can be initalized and assigned by using the `init="true"`, `assign="true"` attributes respectivly.
+
+Variables must be initialized with a value. Literals must be wrapped in an `<arg>`. 
+
+```html
+<x init="true"><arg>Hello World</arg></x>
+```
+
+## `<arg>`
+
+Literals must be wrapped in an `<arg>`.
+
+Any `<arg>` with innerHTML of just numbers (`/^[0-9]+$/`) will be parsed as a JavaScript `number`. To force a string, use `string="true"` attribute.
+
+```
+<arg>2020</arg> <!-- 2020 -->
+<arg string="true">2020</arg> <!-- "2020" -->
+```
+
+## Comments
+
+HTML comments are supported. `<!-- Comments -->`.
+
+## Escaping
+
+*Note*: This feature is planned.
+
+```text
+< becomes &lt;
+> becomes &gt;
+```
+
+## Function Declerations
 
 ## Built in functions:
 
