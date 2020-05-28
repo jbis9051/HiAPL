@@ -1,12 +1,33 @@
 <!DOCTYPE hiapl>
-<x init="true"><arg>Hello World</arg></x>
+<fs init="true">
+        <require>
+            <arg>fs</arg>
+        </require>
+</fs>
+
+<path init="true">
+    <require>
+        <arg>path</arg>
+    </require>
+</path>
+
+<text init="true">
+    <fs>
+        <readFileSync call="true">
+                <path>
+                    <join>
+                        <__dirname/>
+                        <arg>./hiaplc.test.js</arg>
+                    </join>
+                </path>
+        </readFileSync>
+    </fs>
+</text>
+
 <console>
     <log call="true">
-        <x>
-            <substring>
-                <arg>0</arg>
-                <arg>5</arg>
-            </substring>
-        </x>
+        <text>
+           <toString></toString>
+        </text>
     </log>
 </console>

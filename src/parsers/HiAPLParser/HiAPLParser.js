@@ -112,7 +112,7 @@ function parseExpectingResult(element, options = {}) {
         }
         return new AST.Literal(value);
     }
-    if (getAttributeContent(element, "call") === "true") {
+    if (isCallElement(element)) {
         return new AST.CallExpression(new AST.Identifier(element.name), element.children.map(child => parseExpectingResult(child)));
     }
     if (element.children.length === 1) { // this is gonna be a member
@@ -140,7 +140,7 @@ function isCallElement(element) {
     if (element.children.length === 0) {
         return element.closure === "long";
     }
-    if(element.children.length === 1 && element.children[0].closure === "short"){
+    if(element.children.length === 1 && (element.children[0].closure === "short" || element.children[0].name === "arg")){
         return true;
     }
     return false;
