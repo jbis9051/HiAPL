@@ -1,4 +1,8 @@
 <!DOCTYPE hiapl>
-<x init="true"><arg>200</arg></x>
-<x declare="true"><arg>200</arg></x>
-<y><x></x></y>
+<x>
+    <y call="true">
+        <z declare="true">
+            <d/>
+        </z>
+    </y>
+</x>

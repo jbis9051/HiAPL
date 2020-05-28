@@ -5,5 +5,6 @@ const escodegen = require('escodegen');
 
 module.exports = function hiaplc(string) {
     const x = hiAPLParser(htmlParser(lexer(string)));
+    //console.log(JSON.stringify(x));
     return escodegen.generate(x);
 }

@@ -15,10 +15,12 @@ module.exports = {
     ...require('./literal'),
     ...require('./logical-expression'),
     ...require('./node'),
+    ...require('./member-expression'),
     ...require('./program'),
     ...require('./return-statement'),
     ...require('./statement'),
     ...require('./unary-expression'),
     ...require('./variable-declaration'),
     ...require('./variable-declarator'),
+    ...require('./while-statement'),
 }

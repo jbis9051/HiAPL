@@ -4,11 +4,44 @@
         <arg>Hello World</arg>
     </log>
 </console>
-<x init="true">100</x>
-<y init="true">50</y>
-<z init="true"><plus><x/><y/></plus></z>
+
 <console>
     <log>
-        <z/>
+        <another>
+            <arg>Hello World</arg>
+        </another>
     </log>
+</console>
+
+<console> // console.log("Hello World")
+    <log call="true">
+        <arg>Hello World</arg>
+    </log>
+</console>
+
+<x> // x.y(b.h)
+    <y call="true">
+        <b>
+            <h/>
+        </b>
+    </y>
+</x>
+
+
+<console call="true"> // console(log("Hello World"));
+    <log call="true">
+        <arg>Hello World</arg>
+    </log>
+</console>
+
+
+<console call="true"> // console(log("Hello World"));
+    <log call="true">
+        <arg>Hello World</arg>
+    </log>
+</console>
+
+
+<console call="true"> // console(log());
+    <log></log>
 </console>
