@@ -16,6 +16,8 @@ module.exports = {
     ...require('./logical-expression'),
     ...require('./node'),
     ...require('./member-expression'),
+    ...require('./object-expression'),
+    ...require('./property'),
     ...require('./program'),
     ...require('./return-statement'),
     ...require('./statement'),

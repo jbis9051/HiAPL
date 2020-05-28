@@ -8,7 +8,7 @@ class Element extends Node {
         this.comments = [];
         this.attributes = {};
         this.content = "";
-        this.closure = "long"
+        this.closer = "long"
     }
 }
 module.exports = Element;

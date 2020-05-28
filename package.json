@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "dependencies": {
     "escodegen": "^1.14.1",
+    "express": "^4.17.1",
     "mocha": "^7.1.2"
   }
 }

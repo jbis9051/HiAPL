@@ -57,7 +57,7 @@ function htmlParser(tokens) {
                 return states.inElement;
             }
             if (item.token === tokenStore.endOpenWithCloseTagShorthand) {
-                currentNode.closure = "short";
+                currentNode.closer = "short";
                 return states.inCloser;
             }
             throw `Unexpected: ${item}`;
@@ -67,7 +67,7 @@ function htmlParser(tokens) {
                 currentNode.attributes[attributeName] = {type: "string", content: item.content.join("")};
                 return states.inOpener;
             }
-            if (item.token !== tokenStore.attributeValueReference) {
+            if (item.token === tokenStore.attributeValueReference) {
                 currentNode.attributes[attributeName] = {type: "reference", content: item.content.join("")};
                 return states.inOpener;
             }

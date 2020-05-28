@@ -1,6 +1,8 @@
 const {Comment, Node} = require('../HTMLParser');
 const AST = require('../ast');
 
+const numberRegex = /^[0-9]+(\.[0-9]+)?$/;
+
 const specialTags = ["condition", "params"];
 
 const reservedTags = {
@@ -79,10 +81,38 @@ function parseBlock(node, options = {}) {
         return reservedTags[node.name](node);
     }
     if (getAttributeContent(node, "init") === "true") {
+        if (node.closer === "short") { // object deceleration
+            return new AST.VariableDeclaration([new AST.VariableDeclarator(new AST.Identifier(node.name), getObjectExpression(node))]);
+        }
         ensureAChild(node);
         return new AST.VariableDeclaration([new AST.VariableDeclarator(new AST.Identifier(node.name), parseExpectingResult(node.children[0]))]);
     }
     return new AST.ExpressionStatement(parseExpectingResult(node));
+}
+
+function getObjectExpression(element) {
+    const properties = [];
+    Object.entries(element.attributes).forEach(([key, value]) => {
+        if (key === "init" || key === "declare") {
+            return;
+        }
+        properties.push(new AST.Property(new AST.Literal(key), parseAttrValue(value.content)))
+    });
+    return new AST.ObjectExpression(properties);
+}
+
+function parseAttrValue(value) {
+    if (value.type === "string") {
+        return new AST.Literal(value);
+    }
+    const content = value;
+    if (content === "true" || content === "false") {
+        return new AST.Literal(content === "true");
+    }
+    if (content.match(numberRegex)) {
+        return new AST.Literal(parseFloat(content));
+    }
+    return new AST.Identifier(content);
 }
 
 function parseExpectingResult(element, options = {}) {
@@ -102,13 +132,13 @@ function parseExpectingResult(element, options = {}) {
     if (getAttributeContent(element, "init") === "true") {
         throw 'Syntax Error: You cannot initialize a variable here.';
     }
-    if (element.closure === "short") {
+    if (element.closer === "short") {
         return new AST.Identifier(element.name);
     }
     if (element.name === "arg") {
         let value = element.content;
-        if (value.match(/^[0-9]+$/) && !(element.attributes.string && element.attributes.string.content === "true")) {
-            value = parseInt(value);
+        if (value.match(numberRegex) && !(getAttributeContent(element, "string") === "true")) {
+            value = parseFloat(value);
         }
         return new AST.Literal(value);
     }
@@ -138,9 +168,9 @@ function isCallElement(element) {
         return true
     }
     if (element.children.length === 0) {
-        return element.closure === "long";
+        return element.closer === "long";
     }
-    if(element.children.length === 1 && (element.children[0].closure === "short" || element.children[0].name === "arg")){
+    if (element.children.length === 1 && (element.children[0].closer === "short" || element.children[0].name === "arg")) {
         return true;
     }
     return false;
@@ -160,10 +190,10 @@ function memberize(element, deepestElement, parentsObject) { // this little fuck
     if (element === deepestElement || element.children.length === 0) {
         return new AST.MemberExpression(parentsObject, new AST.Identifier(element.name))
     }
-    if(parentsObject){
+    if (parentsObject) {
         return memberize(element.children[0], deepestElement, new AST.MemberExpression(parentsObject, new AST.Identifier(element.name)))
     }
-    return memberize(element.children[0], deepestElement,  new AST.Identifier(element.name));
+    return memberize(element.children[0], deepestElement, new AST.Identifier(element.name));
 }
 
 module.exports = parseHiAPL;

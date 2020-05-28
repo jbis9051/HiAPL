@@ -96,6 +96,16 @@ HTML comments are supported. `<!-- Comments -->`.
 > becomes &gt;
 ```
 
+## Injecting Raw JavaScript
+
+HiAPL should have most of the functioanlity you need but if you must inject JavaScript you can use the eval function.
+
+```html
+<eval>
+   <arg>console.log('Hi')</arg>
+</eval>
+```
+
 ## Function Declerations
 
 ## Built in functions:
