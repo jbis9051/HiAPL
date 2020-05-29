@@ -215,10 +215,10 @@ function parseExpression(element, options = {}) {
             value = element.content === "true";
         } else if (type === "array") {
             return parseArray();
-        } else if (value.match(numberRegex)) {
-            value = parseFloat(value);
         } else if(element.children.length > 0) {
             return parseArray();
+        } else if (value.match(numberRegex)) {
+            value = parseFloat(value);
         }
 
         return new AST.Literal(value);

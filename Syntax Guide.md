@@ -72,6 +72,21 @@ Variables must be initialized with a value. Literals must be wrapped in an `<arg
 <x init="true"><arg>Hello World</arg></x>
 ```
 
+### Objects
+
+Use attrbitues and shorthand to declare objects. `init` and `declare` attributes are implcitily ignored.
+
+```html
+<x init="true" test="test1" foo="bar" /> <!-- var x = { test: "test1", foo: "bar" } -- >
+```
+
+To refer to numbers, booleans, or varaibles, don't use quotes.
+
+```html
+<x init="true" test="test1" foo="bar" /> <!-- var x = { test: "test1", foo: "bar" } -->
+<y init="true" bar=x.foo  test3=true april=20 /> <!-- var y = { bar: x.foo, test3: true, april: 20 } -->
+```
+
 ## `<arg>`
 
 Literals must be wrapped in an `<arg>`.
@@ -86,6 +101,10 @@ To specify a type use the `type` attribute. Acceptable values are:
 ```
 <arg>2020</arg> <!-- 2020 -->
 <arg type="string">2020</arg> <!-- "2020" -->
+```
+
+```
+<arg type="string">Hello World</arg> <!-- "Hello World" -->
 ```
 
 ## Comments
@@ -144,11 +163,96 @@ function funcName(aParam) {
 
 To a declare a function that doesn't accept parameters simply leave `<params>` empty or use HTML shorthand `<params/>`.
 
+## Calling Functions
+
+To call a function create a tag with the function name as the tag name and add an attribute `call="true"`. All children will be passed as args.
+
+```html
+<funcName call="true">
+    <arg>Hello World</arg>
+</funcName>
+```
+
+## Accessing Members
+
+In JavaScript you may do something like `console.log('Hello World')`. To access the `log` property of `console` in HiAPL simply add it as a child.
+
+```html
+<console>
+    <log call="true">
+        <arg>Hello World</arg>
+    </log>
+</console>
+```
+
 #### Anonymous functions
 
 Anonymous functions can be declared using the `<func>` tag.
 
 To create an arrow function simply add a `arrow="true"` attribute on your `<func>`.
+
+## Implicit Stuff
+
+Most implicit things can be overridden by specifiying things explicitly. 
+
+### `<arg>`
+
+- If `<arg>` has any children it implcitly has type array
+- If `<arg>` innerText has just a number, it will be implicitly parsed as a number
+
+```
+<arg>2020</arg> <!-- 2020 -->
+<arg type="string">2020</arg> <!-- "2020" -->
+```
+
+### Function calls
+
+An Element will be an implicit call (`call="true"`) if any of the following are true:
+
+- It has more than one child.
+- It has zero children AND it doesn't use the HTML close shorthand (`<funcName/>`).
+- It has one child AND ( that child uses the HTML close shorthand (`<funcName/>`) OR that child is an `<arg>` element )
+
+
+```html
+<console>
+    <log call="true">
+        <arg>Hello World</arg>
+    </log>
+</console>
+```
+
+and 
+
+```html
+<console>
+    <log>
+        <arg>Hello World</arg>
+    </log>
+</console>
+```
+
+compile to 
+
+```js
+console.log("Hello World");
+```
+
+but
+
+```html
+<console call="true">
+    <log>
+        <arg>Hello World</arg>
+    </log>
+</console>
+```
+
+compiles to
+
+```js
+console(log("Hello World"));
+```
 
 ## Built in functions:
 
