@@ -37,7 +37,7 @@ optionally add to your path
 
 # Documentation
 
-The Syntax Guide can be found [here](https://github.com/jbis9051/HiAPL/blob/Syntax%20Guide.md).
+The Syntax Guide can be found [here](https://github.com/jbis9051/HiAPL/blob/master/Syntax%20Guide.md).
 
 # Contributing
 

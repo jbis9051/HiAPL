@@ -1,6 +1,6 @@
 {
-  "name": "HiAPL",
-  "version": "1.0.0",
+  "name": "hiapl",
+  "version": "0.0.1",
   "dependencies": {
     "escodegen": "^1.14.1",
     "express": "^4.17.1",
