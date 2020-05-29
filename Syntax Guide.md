@@ -2,7 +2,7 @@
 
 Welcome! Let's get Started:
 
-To begin, create a file with the exentsion `.hiapl`.
+To begin, create a file with the extension `.hiapl`.
 
 The first line of your file must be a HiAPL doctype decleration.
 
@@ -72,7 +72,7 @@ Have you ever been writing a while loop and happen to forget to put your conditi
 
 ## Variables
 
-Variables can be initalized and assigned by using the `init="true"`, `assign="true"` attributes respectivly.
+Variables can be initialized and assigned by using the `init="true"`, `assign="true"` attributes respectively.
 
 Variables must be initialized with a value. Literals must be wrapped in an `<arg>`. 
 
@@ -82,7 +82,7 @@ Variables must be initialized with a value. Literals must be wrapped in an `<arg
 
 ### Objects
 
-Use attrbitues and shorthand to declare objects. `init` and `declare` attributes are implcitily ignored.
+Use attributes and shorthands to declare objects. `init` and `declare` attributes are implicitly ignored.
 
 ```html
 <x init="true" test="test1" foo="bar" /> <!-- var x = { test: "test1", foo: "bar" } -- >
@@ -130,7 +130,7 @@ HTML comments are supported. `<!-- Comments -->`.
 
 ## Injecting Raw JavaScript
 
-HiAPL should have most of the functioanlity you need but if you must inject JavaScript you can use the eval function.
+HiAPL should have most of the functionality you need but if you must inject JavaScript you can use the eval function.
 
 ```html
 <eval>
@@ -142,7 +142,7 @@ HiAPL should have most of the functioanlity you need but if you must inject Java
 
 ### `<params>`
 
-`<params>` tags can only be placed inside functions and are used to declare them. They can only contain `<param>` children. `<param>`s cannot contain children. `<param>`s innerText will be the parameter name used in the function. Paramter destructering is not supported.
+`<params>` tags can only be placed inside functions and are used to declare them. They can only contain `<param>` children. `<param>`s cannot contain children. `<param>`s innerText will be the parameter name used in the function. Paramter destructuring is not supported.
 
 ### Declarating Functions/Function Expresssions
 
