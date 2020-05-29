@@ -1,10 +1,11 @@
 <!DOCTYPE hiapl>
-<d init="true" test="1" />
 
-<x init="true" test=d.test />
+<x init="true">
+    <func arrow="true">
+        <params></params>
+        <console>
+            <log><test/></log>
+        </console>
+    </func>
+</x>
 
-<console>
-    <log>
-        <x/>
-    </log>
-</console>

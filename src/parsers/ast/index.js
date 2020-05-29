@@ -10,6 +10,8 @@ module.exports = {
     ...require('./expression-statement'),
     ...require('./for-statement'),
     ...require('./function-expression'),
+    ...require('./arrow-function-expression'),
+    ...require('./function-decleration'),
     ...require('./identifier'),
     ...require('./if-statement'),
     ...require('./literal'),

@@ -20,8 +20,7 @@
             <arg>(req,res) => res.send('Hello World');</arg>
         </eval>
         <!--func>
-            <params><param>req</param></params>
-            <params><param>res</param></params>
+            <params><param>req</param><param>res</param></params>
             <res>
                 <send>
                     <arg>Hello World</arg>

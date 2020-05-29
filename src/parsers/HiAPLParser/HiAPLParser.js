@@ -61,33 +61,10 @@ function getAlternate(element) {
     return [alt, new AST.BlockStatement(alt.children.map(alt => parseBlock(alt)))];
 }
 
-function parseHiAPL(HTMLRoot) {
-    return new AST.Program(HTMLRoot.children.map(child => parseBlock(child)));
-}
-
 function ensureAChild(element) {
     if (element.children.length !== 1) {
         throw `Expected a child for element ${element.name}`
     }
-}
-
-/**
- *
- * @param {Node} node
- * @param options
- */
-function parseBlock(node, options = {}) {
-    if (Object.keys(reservedTags).includes(node.name)) {
-        return reservedTags[node.name](node);
-    }
-    if (getAttributeContent(node, "init") === "true") {
-        if (node.closer === "short") { // object deceleration
-            return new AST.VariableDeclaration([new AST.VariableDeclarator(new AST.Identifier(node.name), getObjectExpression(node))]);
-        }
-        ensureAChild(node);
-        return new AST.VariableDeclaration([new AST.VariableDeclarator(new AST.Identifier(node.name), parseExpectingResult(node.children[0]))]);
-    }
-    return new AST.ExpressionStatement(parseExpectingResult(node));
 }
 
 function getObjectExpression(element) {
@@ -115,9 +92,79 @@ function parseAttrValue(value) {
     return new AST.Identifier(content);
 }
 
+
+function parseHiAPL(HTMLRoot) {
+    return new AST.Program(HTMLRoot.children.map(child => parseBlock(child)));
+}
+
+/**
+ *
+ * @param {Node} node
+ * @param options
+ */
+function parseBlock(node, options = {}) {
+    if (Object.keys(reservedTags).includes(node.name)) {
+        return reservedTags[node.name](node);
+    }
+    if (getAttributeContent(node, "init") === "true") {
+        if (node.closer === "short") { // object deceleration
+            return new AST.VariableDeclaration([new AST.VariableDeclarator(new AST.Identifier(node.name), getObjectExpression(node))]);
+        }
+        ensureAChild(node);
+        return new AST.VariableDeclaration([new AST.VariableDeclarator(new AST.Identifier(node.name), parseExpectingResult(node.children[0]))]);
+    }
+    const params = node.children.filter(child => child.name === "params");
+    if(node.name === "func" || params.length > 0){
+        return parseFunction(node, false);
+    }
+    return new AST.ExpressionStatement(parseExpectingResult(node));
+}
+
+function parseFunction(element, expression) {
+    const paramsChildren = element.children.filter(child => child.name === "params");
+    if(!paramsChildren){
+        throw 'Expected one <params>';
+    }
+    const params = parseParams(paramsChildren[0].children);
+
+    const body = new AST.BlockStatement(
+        element.children
+        .filter(child => child !== paramsChildren[0])
+        .map(child => parseBlock(child))
+    );
+
+    if(element.name === "func"){ // is anonymous
+        if(!expression){
+            throw 'Anonymous functions are not allowed here';
+        }
+        if(getAttributeContent(element, "arrow") === "true"){
+            return new AST.ArrowFunctionExpression(params, body)
+        }
+        return new AST.FunctionExpression(null, params, body)
+    }
+    return new AST.FunctionDeclaration(new AST.Identifier(element.name), params, body)
+}
+
+function parseParams(elements) {
+    return elements.map(param => {
+        if(param.name !== "param"){
+            throw 'Only <param> tags are allowed in a <params> tag';
+        }
+        const content = param.content;
+        if(content.match(/\s/)){
+            throw 'Paramerters cannot have spaces';
+        }
+        return new AST.Identifier(content);
+    });
+}
+
 function parseExpectingResult(element, options = {}) {
     if (Object.keys(reservedTags).includes(element.name)) {
         throw `Unexpected ${element.name}`;
+    }
+    const params = element.children.filter(child => child.name === "params");
+    if(element.name === "func" || params.length > 0){
+        return parseFunction(element, true);
     }
     if (specialTags.includes(element.name)) {
         throw `Special Tag: ${element.name} not allowed here`;
@@ -152,7 +199,6 @@ function parseExpectingResult(element, options = {}) {
         }
         return memberize(element, undefined, undefined);
     }
-    // TODO: Check for function deceleration (<params> child)
 
     return new AST.CallExpression(new AST.Identifier(element.name), element.children.map(child => parseExpectingResult(child)));
 }
