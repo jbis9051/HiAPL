@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+const fs = require('fs-extra');
+const path = require('path');
+const compiler = require('../src')
+
+const realArgs = process.argv.slice(2);
+
+if(realArgs.length < 1){
+    throw 'Pass a file path to compile'
+}
+
+const hiaplFilePath = path.resolve(realArgs[0]);
+
+if(!fs.existsSync(hiaplFilePath)){
+    throw `Could not find file at path: '${hiaplFilePath}'`;
+}
+
+const fileName = path.basename(hiaplFilePath);
+const outputPath = path.resolve('./out', fileName + '.js', );
+
+fs.ensureDirSync(path.resolve('./out'));
+
+const userCode = fs.readFileSync(hiaplFilePath).toString();
+
+const outputCode = compiler(userCode, true);
+
+fs.writeFileSync(outputPath, outputCode);
