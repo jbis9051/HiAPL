@@ -23,7 +23,7 @@ const reservedTags = {
     },
     Delete: (DeleteElement) => {
         ensureAChild(DeleteElement);
-        return new AST.ExpressionStatement(new AST.UnaryExpression("delete", parseExpectingResult(DeleteElement.children[0]), true));
+        return new AST.ExpressionStatement(new AST.UnaryExpression("delete", parseExpression(DeleteElement.children[0]), true));
     },
 }
 
@@ -46,7 +46,7 @@ function getCondition(element) {
     if (condition.children.length > 1) {
         throw 'Expected the condition to have one child';
     }
-    return [condition, parseExpectingResult(condition.children[0])];
+    return [condition, parseExpression(condition.children[0])];
 }
 
 function getAlternate(element) {
@@ -103,21 +103,35 @@ function parseHiAPL(HTMLRoot) {
  * @param options
  */
 function parseBlock(node, options = {}) {
+    options = {
+        inFunction: false,
+        ...options
+    }
     if (Object.keys(reservedTags).includes(node.name)) {
         return reservedTags[node.name](node);
+    }
+    if(node.name === "Return"){
+        if(!options.inFunction){
+            throw '<Return> tags are only permitted as children of functions';
+        }
+        if(node.children.length === 0){
+            return new AST.ReturnStatement(null);
+        }
+        ensureAChild(node);
+        return new AST.ReturnStatement(parseExpression(node.children[0]));
     }
     if (getAttributeContent(node, "init") === "true") {
         if (node.closer === "short") { // object deceleration
             return new AST.VariableDeclaration([new AST.VariableDeclarator(new AST.Identifier(node.name), getObjectExpression(node))]);
         }
         ensureAChild(node);
-        return new AST.VariableDeclaration([new AST.VariableDeclarator(new AST.Identifier(node.name), parseExpectingResult(node.children[0]))]);
+        return new AST.VariableDeclaration([new AST.VariableDeclarator(new AST.Identifier(node.name), parseExpression(node.children[0]))]);
     }
     const params = node.children.filter(child => child.name === "params");
     if(node.name === "func" || params.length > 0){
         return parseFunction(node, false);
     }
-    return new AST.ExpressionStatement(parseExpectingResult(node));
+    return new AST.ExpressionStatement(parseExpression(node));
 }
 
 function parseFunction(element, expression) {
@@ -130,7 +144,7 @@ function parseFunction(element, expression) {
     const body = new AST.BlockStatement(
         element.children
         .filter(child => child !== paramsChildren[0])
-        .map(child => parseBlock(child))
+        .map(child => parseBlock(child, {inFunction: true}))
     );
 
     if(element.name === "func"){ // is anonymous
@@ -158,7 +172,7 @@ function parseParams(elements) {
     });
 }
 
-function parseExpectingResult(element, options = {}) {
+function parseExpression(element, options = {}) {
     if (Object.keys(reservedTags).includes(element.name)) {
         throw `Unexpected ${element.name}`;
     }
@@ -172,9 +186,12 @@ function parseExpectingResult(element, options = {}) {
     if (element.name === "Else") {
         throw `<Else> tags are only permitted as children of <If> elements`;
     }
+    if(element.name === "Return"){
+        throw '<Return> tags are only permitted as children of functions';
+    }
     if (getAttributeContent(element, "assign") === "true") {
         ensureAChild(element);
-        return new AST.AssignmentExpression(new AST.Identifier(element.name), parseExpectingResult(element.children[0]))
+        return new AST.AssignmentExpression(new AST.Identifier(element.name), parseExpression(element.children[0]))
     }
     if (getAttributeContent(element, "init") === "true") {
         throw 'Syntax Error: You cannot initialize a variable here.';
@@ -190,17 +207,17 @@ function parseExpectingResult(element, options = {}) {
         return new AST.Literal(value);
     }
     if (isCallElement(element)) {
-        return new AST.CallExpression(new AST.Identifier(element.name), element.children.map(child => parseExpectingResult(child)));
+        return new AST.CallExpression(new AST.Identifier(element.name), element.children.map(child => parseExpression(child)));
     }
     if (element.children.length === 1) { // this is gonna be a member
         const callElement = findNearestCallElement(element)
         if (callElement) {
-            return new AST.CallExpression(memberize(element, callElement, undefined), callElement.children.map(child => parseExpectingResult(child)));
+            return new AST.CallExpression(memberize(element, callElement, undefined), callElement.children.map(child => parseExpression(child)));
         }
         return memberize(element, undefined, undefined);
     }
 
-    return new AST.CallExpression(new AST.Identifier(element.name), element.children.map(child => parseExpectingResult(child)));
+    return new AST.CallExpression(new AST.Identifier(element.name), element.children.map(child => parseExpression(child)));
 }
 
 function isCallElement(element) {

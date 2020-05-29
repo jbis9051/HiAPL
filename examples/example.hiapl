@@ -2,10 +2,11 @@
 
 <x init="true">
     <func arrow="true">
-        <params></params>
+        <params><param>Test</param></params>
         <console>
             <log><test/></log>
         </console>
+        <Return><test/></Return>
     </func>
 </x>
 
