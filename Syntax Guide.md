@@ -206,4 +206,8 @@ function xor(arg1, arg2) {
 function equal(arg1, arg2) {
   return arg1 === arg2;
 }
+
+function mod(arg1, arg2) {
+  return arg1 % arg2;
+}
 ```

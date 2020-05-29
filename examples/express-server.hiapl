@@ -1,0 +1,34 @@
+<!DOCTYPE hiapl>
+<express init="true">
+    <require>
+        <arg>express</arg>
+    </require>
+</express>
+
+<app init="true">
+    <express></express>
+</app>
+
+<port init="true">
+    <arg>3000</arg>
+</port>
+
+<app>
+    <get>
+        <arg>/</arg>
+        <func arrow="true">
+            <params><param>req</param><param>res</param></params>
+            <res>
+                <send>
+                    <arg>Hello World</arg>
+                </send>
+            </res>
+        </func>
+    </get>
+</app>
+
+<app>
+    <listen>
+        <port/>
+    </listen>
+</app>

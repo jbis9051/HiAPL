@@ -1,0 +1,33 @@
+<!DOCTYPE hiapl>
+<fs init="true">
+    <require>
+        <arg>fs</arg>
+    </require>
+</fs>
+
+<path init="true">
+    <require>
+        <arg>path</arg>
+    </require>
+</path>
+
+<text init="true">
+    <fs>
+        <readFileSync call="true">
+            <path>
+                <join>
+                    <__dirname/>
+                    <arg>../examples/read-file.hiapl</arg>
+                </join>
+            </path>
+        </readFileSync>
+    </fs>
+</text>
+
+<console>
+    <log call="true">
+        <text>
+            <toString></toString>
+        </text>
+    </log>
+</console>

@@ -1,0 +1,48 @@
+<!DOCTYPE hiapl>
+<!-- I will not be using the 15 trick because fuck computer science. -->
+
+<i init="true"><arg>1</arg></i>
+<While>
+    <condition><isLessThanOrEqualTo><i/><arg>100</arg></isLessThanOrEqualTo></condition>
+    <divisbleBy3 init="true">
+        <equal>
+            <mod>
+                <i/>
+                <arg>3</arg>
+            </mod>
+            <arg>0</arg>
+        </equal>
+    </divisbleBy3>
+
+    <divisbleBy5 init="true">
+        <equal>
+            <mod>
+                <i/>
+                <arg>5</arg>
+            </mod>
+            <arg>0</arg>
+        </equal>
+    </divisbleBy5>
+
+    <result init="true"><arg></arg></result>
+
+    <If>
+        <condition><divisbleBy3/></condition>
+
+        <result assign="true"><plus><result/><arg>Fizz</arg></plus></result>
+    </If>
+
+    <If>
+        <condition><divisbleBy5/></condition>
+
+        <result assign="true"><plus><result/><arg>Buzz</arg></plus></result>
+    </If>
+
+    <console>
+        <log call="true">
+            <or><result/><i/></or>
+        </log>
+    </console>
+
+    <i assign="true"><plus><i/><arg>1</arg></plus></i>
+</While>
