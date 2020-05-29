@@ -76,11 +76,16 @@ Variables must be initialized with a value. Literals must be wrapped in an `<arg
 
 Literals must be wrapped in an `<arg>`.
 
-Any `<arg>` with innerHTML of just numbers (`/^[0-9]+$/`) will be parsed as a JavaScript `number`. To force a string, use `string="true"` attribute.
+To specify a type use the `type` attribute. Acceptable values are:
+
+- `string`
+- `number`
+- `boolean`
+- `array`
 
 ```
 <arg>2020</arg> <!-- 2020 -->
-<arg string="true">2020</arg> <!-- "2020" -->
+<arg type="string">2020</arg> <!-- "2020" -->
 ```
 
 ## Comments
@@ -107,6 +112,43 @@ HiAPL should have most of the functioanlity you need but if you must inject Java
 ```
 
 ## Function Declerations
+
+### `<params>`
+
+`<params>` tags can only be placed inside functions and are used to declare them. They can only contain `<param>` children. `<param>`s cannot contain children. `<param>`s innerText will be the parameter name used in the function. Paramter destructering is not supported.
+
+### Declarating Functions/Function Expresssions
+
+To declare a function add a `<params>` as a child of an element. The element's name will be the functions name. 
+
+For example:
+
+```html
+<funcName>
+    <params><param>aParam</param></params>
+    <console>
+        <log>
+            <aParam/>
+        </log>
+    </console>
+</funcName>
+```
+
+transpiles to
+
+```js
+function funcName(aParam) {
+  console.log(aParam);
+}
+```
+
+To a declare a function that doesn't accept parameters simply leave `<params>` empty or use HTML shorthand `<params/>`.
+
+#### Anonymous functions
+
+Anonymous functions can be declared using the `<func>` tag.
+
+To create an arrow function simply add a `arrow="true"` attribute on your `<func>`.
 
 ## Built in functions:
 
