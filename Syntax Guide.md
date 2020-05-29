@@ -2,6 +2,14 @@
 
 Welcome! Let's get Started:
 
+To begin, create a file with the exentsion `.hiapl`.
+
+The first line of your file must be a HiAPL doctype decleration.
+
+```html
+<!DOCTYPE hiapl>
+```
+
 ## Intro
 
 HiAPL stands for HTML is a programming language. HiAPL was inspired by Google listing [HTML as a programming language](https://i.redd.it/wmoaf3m765d21.jpg).
