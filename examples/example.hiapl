@@ -1,12 +1,16 @@
 <!DOCTYPE hiapl>
 
-<x init="true">
-    <func arrow="true">
-        <params><param>Test</param></params>
-        <console>
-            <log><test/></log>
-        </console>
-        <Return><test/></Return>
-    </func>
-</x>
+<str init="true">
+    <arg>
+        <arg>Hello</arg>
+        <arg>World</arg>
+    </arg>
+</str>
 
+<console>
+    <log call="true">
+        <str>
+            <join/>
+        </str>
+    </log>
+</console>

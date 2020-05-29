@@ -73,12 +73,12 @@ function getObjectExpression(element) {
         if (key === "init" || key === "declare") {
             return;
         }
-        properties.push(new AST.Property(new AST.Literal(key), parseAttrValue(value.content)))
+        properties.push(new AST.Property(new AST.Literal(key), parseHTMLAttrValue(value.content)))
     });
     return new AST.ObjectExpression(properties);
 }
 
-function parseAttrValue(value) {
+function parseHTMLAttrValue(value) {
     if (value.type === "string") {
         return new AST.Literal(value);
     }
@@ -110,11 +110,11 @@ function parseBlock(node, options = {}) {
     if (Object.keys(reservedTags).includes(node.name)) {
         return reservedTags[node.name](node);
     }
-    if(node.name === "Return"){
-        if(!options.inFunction){
+    if (node.name === "Return") {
+        if (!options.inFunction) {
             throw '<Return> tags are only permitted as children of functions';
         }
-        if(node.children.length === 0){
+        if (node.children.length === 0) {
             return new AST.ReturnStatement(null);
         }
         ensureAChild(node);
@@ -128,7 +128,7 @@ function parseBlock(node, options = {}) {
         return new AST.VariableDeclaration([new AST.VariableDeclarator(new AST.Identifier(node.name), parseExpression(node.children[0]))]);
     }
     const params = node.children.filter(child => child.name === "params");
-    if(node.name === "func" || params.length > 0){
+    if (node.name === "func" || params.length > 0) {
         return parseFunction(node, false);
     }
     return new AST.ExpressionStatement(parseExpression(node));
@@ -136,22 +136,22 @@ function parseBlock(node, options = {}) {
 
 function parseFunction(element, expression) {
     const paramsChildren = element.children.filter(child => child.name === "params");
-    if(!paramsChildren){
+    if (!paramsChildren) {
         throw 'Expected one <params>';
     }
     const params = parseParams(paramsChildren[0].children);
 
     const body = new AST.BlockStatement(
         element.children
-        .filter(child => child !== paramsChildren[0])
-        .map(child => parseBlock(child, {inFunction: true}))
+            .filter(child => child !== paramsChildren[0])
+            .map(child => parseBlock(child, {inFunction: true}))
     );
 
-    if(element.name === "func"){ // is anonymous
-        if(!expression){
+    if (element.name === "func") { // is anonymous
+        if (!expression) {
             throw 'Anonymous functions are not allowed here';
         }
-        if(getAttributeContent(element, "arrow") === "true"){
+        if (getAttributeContent(element, "arrow") === "true") {
             return new AST.ArrowFunctionExpression(params, body)
         }
         return new AST.FunctionExpression(null, params, body)
@@ -161,11 +161,11 @@ function parseFunction(element, expression) {
 
 function parseParams(elements) {
     return elements.map(param => {
-        if(param.name !== "param"){
+        if (param.name !== "param") {
             throw 'Only <param> tags are allowed in a <params> tag';
         }
         const content = param.content;
-        if(content.match(/\s/)){
+        if (content.match(/\s/)) {
             throw 'Paramerters cannot have spaces';
         }
         return new AST.Identifier(content);
@@ -177,7 +177,7 @@ function parseExpression(element, options = {}) {
         throw `Unexpected ${element.name}`;
     }
     const params = element.children.filter(child => child.name === "params");
-    if(element.name === "func" || params.length > 0){
+    if (element.name === "func" || params.length > 0) {
         return parseFunction(element, true);
     }
     if (specialTags.includes(element.name)) {
@@ -186,7 +186,7 @@ function parseExpression(element, options = {}) {
     if (element.name === "Else") {
         throw `<Else> tags are only permitted as children of <If> elements`;
     }
-    if(element.name === "Return"){
+    if (element.name === "Return") {
         throw '<Return> tags are only permitted as children of functions';
     }
     if (getAttributeContent(element, "assign") === "true") {
@@ -201,9 +201,26 @@ function parseExpression(element, options = {}) {
     }
     if (element.name === "arg") {
         let value = element.content;
-        if (value.match(numberRegex) && !(getAttributeContent(element, "string") === "true")) {
-            value = parseFloat(value);
+        const type = getAttributeContent(element, "type");
+
+        function parseArray() {
+            return new AST.ArrayExpression(element.children.map(child => parseExpression(child)))
         }
+
+        if (type === "number") {
+            value = parseFloat(value);
+        } else if (type === "string") {
+            value = element.content
+        } else if (type === "boolean") {
+            value = element.content === "true";
+        } else if (type === "array") {
+            return parseArray();
+        } else if (value.match(numberRegex)) {
+            value = parseFloat(value);
+        } else if(element.children.length > 0) {
+            return parseArray();
+        }
+
         return new AST.Literal(value);
     }
     if (isCallElement(element)) {
@@ -223,6 +240,9 @@ function parseExpression(element, options = {}) {
 function isCallElement(element) {
     if (getAttributeContent(element, "call") === "true") {
         return true;
+    }
+    if(getAttributeContent(element, "call") === "false"){
+        return false;
     }
     if (getAttributeContent(element, "init") === "true" || getAttributeContent(element, "assign") === "true") {
         return false;
