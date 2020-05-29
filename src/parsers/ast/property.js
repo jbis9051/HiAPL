@@ -1,5 +1,5 @@
 // Dependencies:
-const { Node } = require('./Node');
+const { Node } = require('./node');
 
 class Property extends Node {
     constructor(key, value, loc) {

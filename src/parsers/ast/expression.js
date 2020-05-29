@@ -1,5 +1,5 @@
 // Dependencies:
-const { Node } = require('./Node');
+const { Node } = require('./node');
 
 class Expression extends Node { }
 
